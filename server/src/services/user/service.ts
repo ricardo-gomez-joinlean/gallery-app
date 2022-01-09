@@ -15,7 +15,7 @@ export class UserService {
     @InjectModel(UserModel.User.name) private readonly userModel: Model<UserModel.UserDocument>
   ) {}
 
-  async create(dto: Dto.User.CreateOrUpdate) {
+  async create(dto: Dto.User.CreateOrUpdateDto) {
 
     if ( dto.password ) 
       dto.password = bcrypt.hashSync(dto.password, 12);
@@ -41,7 +41,7 @@ export class UserService {
 
   async findOne(id: string) {
     return this.userModel
-      .findById(id)
+      .findOne({ id, isDeleted: false })
       .select({  
         email: 1,
         name: 1,
@@ -50,7 +50,7 @@ export class UserService {
       });
   }
   
-  async update(id: string, dto: Dto.User.CreateOrUpdate) {
+  async update(id: string, dto: Dto.User.CreateOrUpdateDto) {
     return this.userModel.findByIdAndUpdate(id, dto, { new: true });
   }
 
@@ -58,22 +58,23 @@ export class UserService {
     return this.userModel.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
   }
 
-  async changePassword(id: string, password: string, confirmPassword: string) {
-    
-    const requestedUser = await this.userModel.findById(id);
+  async changePassword(dto: Dto.User.ChangePasswordDto) {
+  
+    const requestedUser = await this.userModel.findById(dto.id);
 
-    if ( !requestedUser )
-      throw new BadRequestException('user not found');
+    const isPasswordMatched = bcrypt.compareSync(dto.currentPassword, requestedUser.password);
 
-    if ( password != confirmPassword )
-      throw new BadRequestException('confirm password not valid')
-
-    const isPasswordMatched = bcrypt.compareSync(password, requestedUser.password);
-
-    if ( isPasswordMatched )
+    if ( !isPasswordMatched )
       throw new BadRequestException('invalid password');
 
-    const updatedUser = await this.userModel.findByIdAndUpdate(id, { password }, { new: true });
+    if ( dto.newpassword != dto.confirmNewPassword )
+      throw new BadRequestException('confirm password not valid')
+    
+    const updatedUser = await this.userModel.findByIdAndUpdate(
+      dto.id, 
+      { password: bcrypt.hashSync(dto.newpassword, 12) }, 
+      { new: true }
+    );
 
     return updatedUser ? true : false;
 

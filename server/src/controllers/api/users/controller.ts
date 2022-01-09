@@ -20,11 +20,11 @@ export class UserController {
   @Post()
   @ApiResponse({
     status: 201,
-    type: Response.Create
+    type: Response.CreateResponse
   })
   async create(
-    @Body() dto: Dto.User.CreateOrUpdate
-  ): Promise<Response.Create> {
+    @Body() dto: Dto.User.CreateOrUpdateDto
+  ): Promise<Response.CreateResponse> {
     
     const user = await this.userService.create(dto);
 
@@ -37,9 +37,9 @@ export class UserController {
   @Get()
   @ApiResponse({
     status: 200,
-    type: Response.FindAll
+    type: Response.FindAllResponse
   })
-  async findAll(): Promise<Response.FindAll> {
+  async findAll(): Promise<Response.FindAllResponse> {
     
     const users = await this.userService.find() as UserModel.User[];
 
@@ -52,11 +52,11 @@ export class UserController {
   @Get('/:id')
   @ApiResponse({
     status: 200,
-    type: Response.FindOne
+    type: Response.FindOneResponse
   })
   async findOne(
     @Param('id') id: string
-  ): Promise<Response.FindOne> {
+  ): Promise<Response.FindOneResponse> {
     
     const user = await this.userService.findOne(id);
 
@@ -69,12 +69,12 @@ export class UserController {
   @Put('/:id')
   @ApiResponse({
     status: 202,
-    type: Response.Update
+    type: Response.UpdateResponse
   })
   async updateOne(
     @Param('id') id: string,
-    @Body() dto: Dto.User.CreateOrUpdate
-  ): Promise<Response.Update> {
+    @Body() dto: Dto.User.CreateOrUpdateDto
+  ): Promise<Response.UpdateResponse> {
     
     const user = await this.userService.update(id, dto);
 
@@ -83,5 +83,22 @@ export class UserController {
     }
 
   }
+
+  @Post('/change-password')
+  @ApiResponse({
+    status: 202,
+    type: Response.ChangePasswordResponse
+  })
+  async changePassword(
+    @Body() dto: Dto.User.ChangePasswordDto
+  ): Promise<Response.ChangePasswordResponse> {
+    
+    const isChanged = await this.userService.changePassword(dto);
+
+    return {
+      isChanged
+    }
+
+  } 
 
 }

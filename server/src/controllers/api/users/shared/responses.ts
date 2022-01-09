@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { UserModel } from "../../../../schemas"
 import { Stub } from "../../../../shared"
 
-export class Create {
+export class CreateResponse {
 
   @ApiProperty({
     example: Stub.User.user()
@@ -11,7 +11,7 @@ export class Create {
 
 }
 
-export class FindAll {
+export class FindAllResponse {
 
 
   @ApiProperty({
@@ -21,7 +21,7 @@ export class FindAll {
 
 }
 
-export class FindOne {
+export class FindOneResponse {
 
   @ApiProperty({
     example: Stub.User.user()
@@ -30,11 +30,20 @@ export class FindOne {
 
 }
 
-export class Update {
+export class UpdateResponse {
   
   @ApiProperty({
     example: Stub.User.user()
   })
   user: UserModel.User;
+
+}
+
+export class ChangePasswordResponse {
+
+  @ApiProperty({
+    example: true
+  })
+  isChanged: boolean;
 
 }
