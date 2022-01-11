@@ -1,45 +1,45 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UserModel } from "../../../../schemas"
+import { UserSchema } from "../../../../services"
 import { Stub } from "../../../../shared"
 
-export class CreateResponse {
+export class UserCreateResponse {
 
   @ApiProperty({
     example: Stub.User.user()
   })
-  user: UserModel.User;
+  user: UserSchema.User;
 
 }
 
-export class FindAllResponse {
+export class UserFindAllResponse {
 
 
   @ApiProperty({
     example: [{ ...Stub.User.user() }]
   })
-  users: UserModel.User[];
+  users: UserSchema.User[];
 
 }
 
-export class FindOneResponse {
+export class UserFindOneResponse {
 
   @ApiProperty({
     example: Stub.User.user()
   })
-  user: UserModel.User;
+  user: UserSchema.User;
 
 }
 
-export class UpdateResponse {
+export class UserUpdateResponse {
   
   @ApiProperty({
     example: Stub.User.user()
   })
-  user: UserModel.User;
+  user: UserSchema.User;
 
 }
 
-export class ChangePasswordResponse {
+export class UserChangePasswordResponse {
 
   @ApiProperty({
     example: true

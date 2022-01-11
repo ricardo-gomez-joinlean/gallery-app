@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { hashSync } from 'bcrypt'
 import * as _ from 'lodash'
 
-import { UserModel } from '../../schemas'
+import { User } from './schema'
 import { Dto } from '../../shared'
 import * as bcrypt from 'bcrypt'
 
@@ -12,10 +12,10 @@ import * as bcrypt from 'bcrypt'
 export class UserService {
 
   constructor(
-    @InjectModel(UserModel.User.name) private readonly userModel: Model<UserModel.UserDocument>
+    @InjectModel(User.name) private readonly userModel: Model<User>
   ) {}
 
-  async create(dto: Dto.User.CreateOrUpdateDto) {
+  async create(dto: Dto.User.UserCreateOrUpdateDto) {
 
     if ( dto.password ) 
       dto.password = bcrypt.hashSync(dto.password, 12);
@@ -50,7 +50,7 @@ export class UserService {
       });
   }
   
-  async update(id: string, dto: Dto.User.CreateOrUpdateDto) {
+  async update(id: string, dto: Dto.User.UserCreateOrUpdateDto) {
     return this.userModel.findByIdAndUpdate(id, dto, { new: true });
   }
 
@@ -58,7 +58,7 @@ export class UserService {
     return this.userModel.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
   }
 
-  async changePassword(dto: Dto.User.ChangePasswordDto) {
+  async changePassword(dto: Dto.User.UserChangePasswordDto) {
   
     const requestedUser = await this.userModel.findById(dto.id);
 

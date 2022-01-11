@@ -20,11 +20,11 @@ export class UserController {
   @Post()
   @ApiResponse({
     status: 201,
-    type: Response.CreateResponse
+    type: Response.UserCreateResponse
   })
   async create(
-    @Body() dto: Dto.User.CreateOrUpdateDto
-  ): Promise<Response.CreateResponse> {
+    @Body() dto: Dto.User.UserCreateOrUpdateDto
+  ): Promise<Response.UserCreateResponse> {
     
     const user = await this.userService.create(dto);
 
@@ -37,9 +37,9 @@ export class UserController {
   @Get()
   @ApiResponse({
     status: 200,
-    type: Response.FindAllResponse
+    type: Response.UserFindAllResponse
   })
-  async findAll(): Promise<Response.FindAllResponse> {
+  async findAll(): Promise<Response.UserFindAllResponse> {
     
     const users = await this.userService.find() as UserModel.User[];
 
@@ -52,11 +52,11 @@ export class UserController {
   @Get('/:id')
   @ApiResponse({
     status: 200,
-    type: Response.FindOneResponse
+    type: Response.UserFindOneResponse
   })
   async findOne(
     @Param('id') id: string
-  ): Promise<Response.FindOneResponse> {
+  ): Promise<Response.UserFindOneResponse> {
     
     const user = await this.userService.findOne(id);
 
@@ -69,12 +69,12 @@ export class UserController {
   @Put('/:id')
   @ApiResponse({
     status: 202,
-    type: Response.UpdateResponse
+    type: Response.UserUpdateResponse
   })
   async updateOne(
     @Param('id') id: string,
-    @Body() dto: Dto.User.CreateOrUpdateDto
-  ): Promise<Response.UpdateResponse> {
+    @Body() dto: Dto.User.UserCreateOrUpdateDto
+  ): Promise<Response.UserUpdateResponse> {
     
     const user = await this.userService.update(id, dto);
 
@@ -87,11 +87,11 @@ export class UserController {
   @Post('/change-password')
   @ApiResponse({
     status: 202,
-    type: Response.ChangePasswordResponse
+    type: Response.UserChangePasswordResponse
   })
   async changePassword(
-    @Body() dto: Dto.User.ChangePasswordDto
-  ): Promise<Response.ChangePasswordResponse> {
+    @Body() dto: Dto.User.UserChangePasswordDto
+  ): Promise<Response.UserChangePasswordResponse> {
     
     const isChanged = await this.userService.changePassword(dto);
 
@@ -100,5 +100,6 @@ export class UserController {
     }
 
   } 
+
 
 }
