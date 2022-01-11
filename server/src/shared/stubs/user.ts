@@ -1,7 +1,7 @@
-import { UserModel  } from "../../schemas"
+import { UserSchema } from "../../services"
 
 
-export const user = (): UserModel.User  => {
+export const user = (): UserSchema.User  => {
   return {
     email: 'example@hotmail.com',
     birthdate: new Date(),

@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { UserModel } from "../../../schemas";
 
-import { UserService } from "../../../services"
+import { UserSchema, UserService } from "../../../services"
 import { Dto } from "../../../shared"
 
 import { Response } from "./shared"
@@ -41,7 +40,7 @@ export class UserController {
   })
   async findAll(): Promise<Response.UserFindAllResponse> {
     
-    const users = await this.userService.find() as UserModel.User[];
+    const users = await this.userService.find() as UserSchema.User[];
 
     return {
       users
