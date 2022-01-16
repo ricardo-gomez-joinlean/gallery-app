@@ -16,6 +16,8 @@ export class ImageGalleryService {
     return new this.imageGalleryModel(dto).save();
   }
 
-  async findByUser() {}
+  async findByUser(user: string) {
+    return this.imageGalleryModel.find({ user });
+  }
 
 }

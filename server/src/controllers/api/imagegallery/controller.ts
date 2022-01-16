@@ -30,21 +30,35 @@ export class ImageGalleryController {
     @UploadedFile() file: any 
   ): Promise<ControllerShared.Responses.ImageGalleryCreateResponse> {
 
-    console.log(dto);
-
     if (file) {
       const cloudinaryResp = await this.cloudinaryService
         .upload(file, '/imagegallery');
 
       dto.url = cloudinaryResp.public_id;
-    }
 
-    console.log(dto)
+    }
 
     const imageGallerydb = await this.imageGalleryService.create(dto);
 
     return {
       imageGallery: imageGallerydb
+    }
+
+  }
+
+  @Get('/user/:user')
+  @ApiResponse({
+    status: 200,
+    type: ControllerShared.Responses.ImageGalleryFindByUserResponse
+  })
+  async findByUser(
+    @Param('user') user: string
+  ): Promise<ControllerShared.Responses.ImageGalleryFindByUserResponse> {
+
+    const images = await this.imageGalleryService.findByUser(user);
+
+    return {
+      images
     }
 
   }

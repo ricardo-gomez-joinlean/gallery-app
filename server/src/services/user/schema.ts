@@ -23,6 +23,9 @@ export class User extends ModelTemplate {
   @Prop()
   birthdate: Date;
 
+  @Prop({ required: false })
+  avatarImageUrl?: string
+
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

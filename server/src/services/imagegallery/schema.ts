@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document } from 'mongoose'
-
+import { Document, Schema as SchemaMongoose } from 'mongoose'
 import { ModelTemplate } from '../../shared'
+import { UserSchema } from '../user'
 
 export type ImageGalleryDocument = ImageGallery & Document;
 
@@ -14,6 +14,7 @@ export class ImageGallery extends ModelTemplate {
   @Prop({ 
     required: true,
     ref: 'users',
+    type: SchemaMongoose.Types.ObjectId
   })
   user: string;
 

@@ -1,6 +1,6 @@
 import { ApiProperty, ApiResponse } from "@nestjs/swagger";
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class UserCreateOrUpdateDto {
 
@@ -53,3 +53,36 @@ export class UserChangePasswordDto {
   confirmNewPassword: string;
 
 }
+
+export class UserUpdateAvatarImgDto {
+
+  @IsString()
+  @IsOptional()
+  url?: string;
+
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+  })
+  file?: any;
+
+}
+
+export class UserAuthDto {
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'rickgomezperez@gmail.com'
+  })
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'any password'
+  })
+  password: string;
+
+}
+

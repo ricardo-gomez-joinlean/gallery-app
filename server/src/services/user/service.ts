@@ -1,18 +1,20 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose';
-import { hashSync } from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 import * as _ from 'lodash'
 
 import { User } from './schema'
 import { Dto } from '../../shared'
-import * as bcrypt from 'bcrypt'
+
+import * as Shared from "../../shared"
 
 @Injectable()
 export class UserService {
 
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly jwtService: Shared.Providers.JWT.JWTService
   ) {}
 
   async create(dto: Dto.User.UserCreateOrUpdateDto) {
@@ -77,6 +79,30 @@ export class UserService {
     );
 
     return updatedUser ? true : false;
+
+  }
+
+  async updateAvatarImage(id: string, newAvatarImgUrl: string) {
+
+    return this.userModel.findByIdAndUpdate(id, { avatarImageUrl: newAvatarImgUrl }, { new: true });
+
+  }
+
+  async auth(email: string, password: string) {
+    
+    const userDB = await this.userModel.findOne({ email });
+    
+    if ( !userDB )
+      throw new BadRequestException('email or password invalid');
+      
+    const isPasswordMatched = bcrypt.compareSync(password, userDB.password);
+
+    if ( !isPasswordMatched )
+      throw new BadRequestException('invalid password');
+
+    const token = this.jwtService.verify(userDB.id);
+
+    return token;
 
   }
 

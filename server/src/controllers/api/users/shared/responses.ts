@@ -47,3 +47,19 @@ export class UserChangePasswordResponse {
   isChanged: boolean;
 
 }
+
+export class UserUpdateAvatarImgResponse {
+
+  @ApiProperty({
+    example: true
+  })
+  isChanged: boolean;
+
+}
+
+export class UserAuthResponse {
+
+  @ApiProperty({ example: 'a token xd' })
+  token: string;
+
+}

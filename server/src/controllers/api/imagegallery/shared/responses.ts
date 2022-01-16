@@ -10,3 +10,12 @@ export class ImageGalleryCreateResponse {
   imageGallery: ImageGallerySchema.ImageGallery;
 
 }
+
+export class ImageGalleryFindByUserResponse {
+
+  @ApiProperty({
+    example: [ Shared.Stub.ImageGalllery.imageGallery() ] 
+  })
+  images: ImageGallerySchema.ImageGallery[];
+
+}
